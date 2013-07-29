@@ -16,6 +16,9 @@ mach_inject_bundle_pid(
 	assert( bundlePackageFileSystemRepresentation );
 	assert( pid > 0 );
 	
+
+    
+    
 	mach_error_t	err = err_none;
 	
 	//	Get the framework's bundle.
@@ -39,7 +42,11 @@ mach_inject_bundle_pid(
 		CFURLGetFileSystemRepresentation(injectionURL, true, url, 1024);
 		printf("got a URL %s\n", url);*/
 		if( !injectionURL )
+        {
 			err = err_mach_inject_bundle_couldnt_find_injection_bundle;
+            fprintf(stderr, "Couldn't find injection bundle (stub)\n");
+        }
+        
 	}
 	
 	//	Create injection bundle instance.
@@ -47,7 +54,10 @@ mach_inject_bundle_pid(
 	if( !err ) {
 		injectionBundle = CFBundleCreate( kCFAllocatorDefault, injectionURL );
 		if( !injectionBundle )
+        {
 			err = err_mach_inject_bundle_couldnt_load_injection_bundle;
+            fprintf(stderr, "Couln't load injection bundle (stub)\n");
+        }
 	}
 	
 	//	Load the thread code injection.
@@ -72,6 +82,8 @@ mach_inject_bundle_pid(
 			   bundlePathSize );
 	}
 	
+    (stderr, "ABOUT TO INJECT THE CODE\n");
+    
 	//	Inject the code.
 	if( !err ) {
 		err = mach_inject( injectionCode, param, paramSize, pid, 0 );

@@ -74,6 +74,7 @@ mach_inject(
 		stackSize = 16 * 1024;
 	
 	//	Convert PID to Mach Task ref.
+    fprintf(stderr, "ABOUT TO GET MACH TASK");
 	mach_port_t	remoteTask = 0;
 	if( !err ) {
 		err = task_for_pid( mach_task_self(), targetProcess, &remoteTask );
@@ -82,6 +83,8 @@ mach_inject(
 #endif
 	}
 		
+    fprintf(stderr, "AFTER MACH TASK ERR IS %d\n", err);
+    
 	/** @todo
 		Would be nice to just allocate one block for both the remote stack
 		*and* the remoteCode (including the parameter data block once that's
